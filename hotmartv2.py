@@ -6,7 +6,6 @@ from threading import Thread
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-#from pytube import YouTube
 import youtube_dl
 
 if (len(sys.argv) < 4):
@@ -50,13 +49,18 @@ def get_page_list():
         driver.implicitly_wait(10)
         pages = module.find_element_by_class_name("navigation-module-pages").find_elements_by_class_name("navigation-page")
 
+        index = 1
         for page in pages:
 
             page.find_element_by_class_name("navigation-page-info").find_element_by_class_name("navigation-page-title")
             driver.implicitly_wait(10)
             page.click()
+            time.sleep(2)
 
-            list_of_articles[page.text] = driver.current_url
+            list_of_articles[str(index) + " - " + page.text] = driver.current_url
+            index = index + 1
+
+    print("List: ", list_of_articles)
 
     return list_of_articles
 
@@ -64,19 +68,27 @@ def extract_video_links(page_url):
     videos = []
 
     print("Link: ", page_url)
-    time.sleep(2)
-    driver.implicitly_wait(20)
-    driver.get(page_url)
-    time.sleep(4)
-    driver.implicitly_wait(30)
-    iframes = driver.find_elements_by_tag_name("iframe")
+    done = None
+    while done is None:
+        try:
+            time.sleep(2)
+            driver.implicitly_wait(20)
+            driver.get(page_url)
+            time.sleep(4)
+            driver.implicitly_wait(30)
+            iframes = driver.find_elements_by_tag_name("iframe")
 
-    for iframe in iframes:
-        src = iframe.get_attribute("src")
-        if "youtube" in src:
-            videos.append(("youtube", src))
-        elif "vimeo" in src:
-            videos.append(("vimeo", src))
+            for iframe in iframes:
+                time.sleep(2)
+                driver.implicitly_wait(30)
+                src = iframe.get_attribute("src")
+                if "youtube" in src:
+                    videos.append(("youtube", src))
+                elif "vimeo" in src:
+                    videos.append(("vimeo", src))
+            done = True
+        except:
+            pass
 
     return videos
 
@@ -90,10 +102,6 @@ def create_folder(name):
     return "./"+name
 
 class VideoDownloader(object):
-    #@staticmethod
-    #def download_youtube_video(url, folder):
-    #    YouTube(url).streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download('./'+folder+'/')
-
     @staticmethod
     def download_video(url, folder):
         print("URL: ", url)
