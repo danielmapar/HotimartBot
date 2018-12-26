@@ -60,8 +60,6 @@ def get_page_list():
             list_of_articles[str(index) + " - " + page.text] = driver.current_url
             index = index + 1
 
-    print("List: ", list_of_articles)
-
     return list_of_articles
 
 def extract_video_links(page_url):
@@ -138,12 +136,15 @@ class DownloadThread(Thread):
         print("In progess: " + str(self.parent.THREADS_DONE+1) + "/" + str(self.parent.TOTAL_THREADS))
         for video in self.videos:
             done = None
+            retry = 0
             while done is None:
+                if retry == 5:
+                    done = True
                 try:
                     VideoDownloader.download_video(video[1], self.folder)
                     done = True
                 except:
-                    pass
+                    retry = retry + 1
         self.parent and self.parent.on_thread_finished()
 
 
@@ -157,10 +158,15 @@ def execution():
     time.sleep(2)
     dict_of_pages = get_page_list()
 
+    print("List: ", dict_of_pages)
+
     download_manager = DownloadManager(total_pages=len(dict_of_pages))
 
     for page_title in dict_of_pages:
+        print("dict_of_pages[page_title]: ", dict_of_pages[page_title])
+        print("page_title: ", page_title)
         videos = extract_video_links(dict_of_pages[page_title]);
+        print("videos: ", videos)
         folder = create_folder(FOLDER_NAME+"/"+page_title);
         download_manager.new_thread(videos, folder).start()
 
