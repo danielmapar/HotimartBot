@@ -1,0 +1,10 @@
+[flake8]
+select = ANN,BLK,C,D,E,F,I,W
+ignore = E203,W503
+max-line-length = 88
+application-import-names = hotmart_bot,tests
+import-order-style = smarkets
+docstring-convention=numpy
+per-file-ignores =
+    tests/*:S101,ANN
+    noxfile.py:ANN
