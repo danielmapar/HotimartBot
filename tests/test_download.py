@@ -18,7 +18,7 @@ def test_download():
 
     SITE = args.site
     if args.envfile:
-        USERNAME = os.getenv("USERNAME")
+        USERNAME = os.getenv("ACCOUNT_USERNAME")
         PWD = os.getenv("PASSWORD")
     else:
         USERNAME = args.username
