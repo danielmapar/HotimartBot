@@ -10,7 +10,9 @@ python-dotenv = "^0.15.0"
 youtube-dl = "^2020.12.2"
 pathvalidate = "^2.3.0"
 selenium = "3.141.0"
+selenium-wire = "2.1.2"
 webdriver_manager = "3.2.2"
+pycryptodome = "3.9.9"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"

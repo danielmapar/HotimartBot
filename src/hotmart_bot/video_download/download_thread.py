@@ -33,7 +33,7 @@ class DownloadThread(Thread):
                 if retry == 5:
                     done = True
                 try:
-                    VideoDownloader.download_video(video.url, self.folder, self._referer)
+                    VideoDownloader.download_video(video, self.folder, self._referer)
                     done = True
                 except:
                     retry = retry + 1
