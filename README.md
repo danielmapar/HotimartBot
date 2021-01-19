@@ -45,6 +45,27 @@ poetry run hotmart-bot <domain> <username> <password>
 poetry run pytest -v tests
 ```
 
+## 1.5 Alternate instructions (unsupported)
+
+If you can't install poetry, try these instructions:
+
+```
+cd hotmartbot
+python -m venv .venv
+souce .venv/bin/activate
+pip install `sed -n '/^\[tool\.poetry\.dependencies\]/,/^$/ { /^python /d; s/\(.*\) = .*/\1/p }' pyproject.toml`
+pip install `sed -n 's/^\([^ ]\+\) = \[$/\1/p' poetry.lock`
+```
+
+Then execute it with:
+
+```
+cd src
+python -m hotmart_bot -usr <username> -pwd <password> <domain>
+```
+
+You should also have `google-chrome` installed on your machine.
+
 2. See test coverage:
 
 ```powershell
