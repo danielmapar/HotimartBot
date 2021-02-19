@@ -34,7 +34,7 @@ OBS: Execute with "--no-dev" option if you don't want to install the dev package
 1. Execute the Hotmart bot:
 
 ```powershell
-poetry run hotmart-bot <domain> <username> <password>
+poetry run hotmart-bot -usr [email] -pwd [password] [site NAME]
 ```
 
 ## 1.4. Tests
@@ -61,7 +61,7 @@ Then execute it with:
 
 ```
 cd src
-python -m hotmart_bot -usr <username> -pwd <password> <domain>
+python -m hotmart_bot -usr [email] -pwd [password] [site NAME]
 ```
 
 You should also have `google-chrome` installed on your machine.
